@@ -1,0 +1,295 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <style>
+        .image {
+            width: 500px;
+            height: 300px;
+            position: relative;
+    	    top:50%;
+            left:50%;
+        }
+        #picture {
+			display:block;
+			margin-left:auto;
+			margin-right:auto;
+            width: 40%;
+        }
+        .music {
+            position: relative;
+        }
+        .text {
+            position: relative;
+            text-align: center;
+        }
+        .container::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-position: center;
+            background: url('pictures/background.jpg');
+            background-size: 30% auto;
+            /*background-repeat: repeat-y;*/
+            opacity: 0.4;
+            z-index: -1;
+        }
+        .button {
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #bab1ba));
+            background: -moz-linear-gradient(top, #ededed 5%, #bab1ba 100%);
+            background: -webkit-linear-gradient(top, #ededed 5%, #bab1ba 100%);
+            background: -o-linear-gradient(top, #ededed 5%, #bab1ba 100%);
+            background: -ms-linear-gradient(top, #ededed 5%, #bab1ba 100%);
+            background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#bab1ba', GradientType=0);
+            background-color: #ededed;
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+            border-radius: 15px;
+            border: 1px solid #d6bcd6;
+            display: inline-block;
+            cursor: pointer;
+            color: #000000;
+            font-family: Arial;
+            font-size: 15px;
+            padding: 7px 25px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #e1e2ed;
+        }
+        .button:hover {
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #bab1ba), color-stop(1, #ededed));
+            background: -moz-linear-gradient(top, #bab1ba 5%, #ededed 100%);
+            background: -webkit-linear-gradient(top, #bab1ba 5%, #ededed 100%);
+            background: -o-linear-gradient(top, #bab1ba 5%, #ededed 100%);
+            background: -ms-linear-gradient(top, #bab1ba 5%, #ededed 100%);
+            background: linear-gradient(to bottom, #bab1ba 5%, #ededed 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bab1ba', endColorstr='#ededed', GradientType=0);
+            background-color: #bab1ba;
+        }
+        .button:active {
+            position: relative;
+            top: 1px;
+        }
+        @font-face {
+            font-family: 'calligraffittiregular';
+            src: url('calligraffitti-regular-webfont.woff2') format('woff2'),
+                url('calligraffitti-regular-webfont.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        p {
+            font-family: 'calligraffittiregular';
+            font-weight: 900;
+            font-size: 20px;
+            color: #181616;
+        }
+    </style>
+
+    <title>
+        7 Blessings
+    </title>
+    <script>
+
+        //Audio
+        function audio(sound) {
+            if(sound == 0){
+                var x = document.getElementById("Audio");
+                if (x.canPlayType("audio/mpeg")) {
+                    x.setAttribute("src", "shame-1.mp3");
+                } else {
+                    x.setAttribute("src", "shame-1.ogg");
+                }
+            }
+            else{
+                var x = document.getElementById("Audio");
+                if (x.canPlayType("audio/mpeg")) {
+                    x.setAttribute("src", "got.mp3");
+                } else {
+                    x.setAttribute("src", "got.ogg");
+                }
+                
+            }
+        }
+
+        //Game
+        var list = []
+        list[0] = {
+            desc: 'Chegas a Iron Wood onde és bem-recebido e onde te instalas. Passado pouco tempo, depois de mostrares o teu valor como serviçal, assumes uma excelente função, és agora o mensageiro da família Iron Wood e cumpres funções de resolução de pequenas zaragatas nas aldeias locais. Levas uma vida simples e és conhecido por todos os habitantes da região, porém não tarda a que os Ebern sejam convocados pela família Stark para uma guerra de vingança contra os Lannister, e tu?',
+            txt1: "Cumpres o teu dever e segues os Ebern para a guerra.",
+            target1: 1,
+            txt2: "Não queres morrer a lutar uma luta que não é tua e foges para King\'s Landing.",
+            target2: 5,
+            img: "pictures/10.jpg"
+        };
+        list[1] = {
+            desc: 'Infelizmente os Ebern foram todos mortos durante os conflitos iniciais. Como pessoa de maior confiança dos Ebern é te atribuído o comando da pequena força de Iron Wood, a qual sob o teu comando passa a assumir suma importância nas vitorias posteriores. A tuas proezas comandando apenas uma pequena força ganham-te o respeito dos nobres nortenhos e é te atribuído um título nobre e assumes funções como conselheiro da família Stark. Porém, embora a família Stark tenha ganho todas as batalhas em campo, muito fruto dos teus conselhos, não consegue conquistar as solidas fortalezas dos Lannister. Quando te é pedido que aconselhes que rumo tomar tu defendes... ',
+            txt1: "Que seria melhor construir uma aliança com a Rainha Targaryen, pois a coroa do Sul não é o que move os nortenhos, mas sim a sede se justiça e vingança.",
+            target1: 2,
+            txt2: "Que seria melhor enviar alguém para negociar com os Lannister, e indicas-te a ti próprio, com uma escolta de alguns homens da tua confiança.",
+            target2: 10,
+            img: "pictures/12.jpg"
+        };
+        list[2] = {
+            desc: 'Uma aliança é criada entre os Stark e a Rainha Targaryen. A duas forças unidas conquistam Casterly Rock e marcham para King\'s Landing. As últimas guarnições dos Lannister encontram-se bem defendidas, pelo que sugeres que... ',
+            txt1: "Se realize um ataque ao portão principal com todas as forças, assumindo que os dragões serão capazes de destruir os portões principais.",
+            target1: 10,
+            txt2: "Se realize um cerco de alguns dias, e um posterior ataque noturno, utilizando os dragões como distração no flanco oposto.", target2: 11,
+            img: "pictures/13.jpeg"
+        };
+        list[3] = {
+            desc: 'Durante a viagem apercebes-te que alguém está a ser atacado no meio da estrada. Dois homens, um de aspeto nobre e outro que deve ser seu serviçal, estão a ser abordados por quatro assaltantes e tu...',
+            txt1: "Tentas distrair os assaltantes fazendo conversa de circunstância.",
+            target1: 4,
+            txt2: "Segues o teu caminho, não é nada contigo.",
+            target2: 5,
+            img: "pictures/3.jpg"
+        };
+        list[4] = {
+            desc: 'Os dois homens aproveitam a oportunidade de criaste a desembaraçam-se dos assaltantes. Ficas admirado com a destreza em combate dos dois e percebes que mesmo sem a tua ajuda eles teriam ficado bem. Porém o homem de aspeto nobre apresenta-se como Richard Ebern e convida-te para o acompanhares onde te dará uma recompensa',
+            txt1: "Agradeces a oferta e acompanhas os dois homens",
+            target1: 0,
+            txt2: "Agradeces a oferta, mas segues o teu caminho para King\'s Landing",
+            target2: 5,
+            img: "pictures/4.jpg"
+        };
+        list[5] = {
+            desc: 'Quando chegas a King\'s Landing ficas maravilhado, nunca tinhas visto tamanha cidade. Acabas por procurar trabalho, mas não é fácil, a vida na cidade é bem mais difícil que a vida no campo.',
+            txt1: "Optas por ser serviçal no Castelo de King\'s Landing ao serviço dos Lannister.",
+            target1: 6,
+            txt2: "Ouves falar dos Targaryen e optas por abandonar King\'s Landing para te juntar a eles.",
+            target2: 8,
+            img: "pictures/6.jpg"
+        };
+        list[6] = {
+            desc: 'O teu trabalho de serviçal acabar por te colocar como peão em vários planos de traição entre nobres de King\'s Landing, e beneficias com o mesmo ganhando um pequeno título de nobre ao serviço dos Lannister. É-te dado um pequeno castelo e o comando de uma pequena guarnição, e passas a assumir a responsabilidade pelo transporte de ouro Lannister entre Casterly Rock e King\'s Landing. Numa missão rotineira de transporte, quando já te encontravas a alguma distância dos portões de Casterly Rock, a guarnição de Casterly Rock é atacada pelo exército Targaryen. Face a isto tu das a ordem de...',
+            txt1: "Retornar a Casterly Rock e ajudar na defesa.",
+            target1: 10,
+            txt2: "Seguir para King\'s Landing que já se faz tarde.",
+            target2: 7,
+            img: "pictures/14.jpg"
+        };
+        list[7] = {
+            desc: 'Quando retornas a King\'s Landing com o ouro, sendo apenas tu e os teus homens os sobreviventes do ataque a Casterly Rock, e com uma história previamente combinada de feitos heróicos, és aclamado como um herói! Assumes assim funções de conselheiro na defesa de King\'s Landing contra o ataque iminente do exército conjunto da família Targaryen e Stark. Quando te é pedido conselho propões...',
+            txt1: "O uso de wildfire e mercenários da Companhia Dourada! O outro exército tem dragões, mas King\'s Landing tem wildfire e a superioridade conferida pelas muralhas e um exército surpresa que atacará o exército conjunto das famílias Targaryen e Stark de surpresa pela retaguarda.",
+            target1: 10,
+            txt2: "Uma reunião fora das muralhas entre os três soberanos, montanto préviamente uma armadilha subterrânea que cause uma explosão com wildfire e a consequente morte dos indesejados, garantido à Rainha Lannister e aos seus conselheiros de que serão feitos preparativos para que saiam incólumes.",
+            target2: 13,
+            img: "pictures/7.jpg"
+        };
+        list[8] = {
+            desc: 'Durante a recruta apresentas uma capacidade com as armas a cima da média, porém também os teus conhecimentos da geografia de Westeros não passam despercebidos. Após ganhares a confiança respeitos da Rainha, acabas por assumir a função de Capitão e Executor da Rainha. Quando o exército se consolidou foi realizado o primeiro ataque aos Lannister, estando a queda de Casterly Rock assegurada, porém reparas numa escolta que se escapa transportando algo ou alguém e...',
+            txt1: "Com o calor da batalha os homens, ainda indisciplinados, não ouvem as tuas ordens e acabas por perseguir sozinho a escolta Lannister.",
+            target1: 9,
+            txt2: "Não queres perder o mérito da batalha face a outros capitães e avanças contra Casterly Rock para desmembrar o desorganizado exército Lannister que sobra.",
+            target2: 10,
+            img: "pictures/14.jpg"
+        };
+        list[9] = {
+            desc: 'A escolta que intersetaste transportava ouro, e sob interrogação, o soldado sobrevivente da escolta, que ainda tinha amor à sua vida, afiançou que esse ouro se destinava a pagar os serviços de um exército mercenário denominado de Companhia Dourada. Esta informação deixa-te nas boas graças da Rainha Targaryen, não só pelo que evitou, mas também pela audácia em combater em tamanha desvantagem numérica. Neste momento nada há em King\'s Landing que impeça a conquista Targaryen. O exército Targaryen facilmente trespassa a muralhas chamuscadas pelos dragões e a escolta real atravessa apressadamente as ruas e pátios até à sala do trono. Lá encontra-se a última guarnição da Rainha Lannister, com o lendário Gregor Clegane - "a Montanha". Toda a escolta Targaryen pára amedrontada com o famoso e anormalmente sereno gigante e tu...',
+            txt1: "Sabes quem ele é, o sangue ferve-te de excitação por poderes defrontar tamanho adversário. Investes e deixas o teu corpo lutar de forma automática e desenfreada.",
+            target1: 12,
+            txt2: "Sabes que ele não é um homem vulgar e que se ele te acertar podes ficar em maus lençóis, por isso atuas de forma calculada e meticulosa, e insitas a investida dele.",
+            target2: 10,
+            img: "pictures/9.jpg"
+        };
+        list[10] = {
+            desc: 'Infelizmente a tua opção ou o acaso da vida levaram-te a melhor. Tropecaste? Cortaram-te a cabeça? Foste enveneado? De alguma forma acabaste morto e ficas sem saber o resto da história, por estares morto, obviamente. Mas nem tudo é mau, vê o lado positivo. "Qual!?" - perguntas. Pois, também não sabemos qual é, mas certamente que existem um. O sentido da vida ainda é uma coisa que ilude muita gente, e não é este jogo que te vai elucidar sobre isso.',
+            txt1: "Começar de novo",
+            target1: 14,
+            txt2: "Sair",
+            target2: -1,
+            img: "pictures/11.jpg",
+        };
+        list[11] = {
+            desc: 'A aliança entre Stark e Targaryen triunfa e os Lannister são eliminados. As tuas proezas para ajudar o Norte e honra demonstrada ao serviço da família Stark levaram-te a obter grande prestígio nos Sete Reinos, em especial entre as gentes do Norte. Com o casamento e subida ao trono em King\'s Landing do ultimo Stark e da Rainha Targaryen és nomeado Regente do Norte e é-te atribuído Iron Wood, o qual rapidamente se torna a maior cidade do Norte.',
+            txt1: "Começar de novo",
+            target1: 14,
+            txt2: "Sair",
+            target2: -1,
+            img: "pictures/16.jpg"
+        };
+        list[12] = {
+            desc: 'A família Targaryen assume o trono dos Sete Reinos de forma incontestável. As tuas proezas em batalha e o teu contributo para este momento não são esquecidos, e a nova família real nomeia-te Regente de Casterly Rock, antiga fortaleza chamuscada e orgulho dos defuntos Lannister. Um prémio digno apenas de um verdadeiro Senhor da Guerra, feito que será cantado por bardos por muitos e muitos anos.',
+            txt1: "Começar de novo",
+            target1: 14,
+            txt2: "Sair",
+            target2: -1,
+            img: "pictures/15.jpg"
+        };
+        list[13] = {
+            desc: 'Finalmente a guerra acaba! Não existem mais Stark nem Targaryen... Nem Lannister, a Rainha e os seus conselheiros morreram também. É com fingido pesar que \"aplicas justiça\" a quem não fez o seu trabalho e foi responsável pela colocação da Rainha em perigo mortal. Algumas bocas foram silenciadas e outras incriminadas... Os Sete Reinos ficaram sem linhagens para assumir o trono. Porém o exército de King\'s Landing tem o maior respeito e adoração por ti, visto que os livraste da morte, e aclama-te o novo Rei de Westeros, não por sangue, mas por \"mérito e humildade\".',
+            txt1: "Começar de novo",
+            target1: 14,
+            txt2: "Sair",
+            target2: -1,
+            img: "pictures/17.jpg"
+        };
+        list[14] = {
+            desc: 'Mais um dia chega ao fim em Westeros. és um jovem plebeu, como tantos outros, e encontras-te pensativo, enquanto fazes as lidas que te competem de estomago vazio, a imaginar o que te espera no dia seguinte. Falta apenas umas horas e a tua vida vai mudar radicalmente porque...',
+            txt1: "Passas a trabalhar para os Ebern de Iron Wood, uma pequena, mas justa família nobre que rege a região. Nunca terás muito, mas sabes que nunca terás a barriga vazia.",
+            target1: 0,
+            txt2: "Vais iniciar uma viagem para King's Landing em busca de uma vida melhor, só tens o que levas contigo e a esperança de encontrar algo melhor.",
+            target2: 3,
+            img: "pictures/1.jpg"
+        };
+
+        function ler(destino) {
+            if (destino < 0) {
+                alert("Um verdadeiro herói nunca desiste!");
+                ler(14);
+            }
+            var target1 = list[destino].target1;
+            var target2 = list[destino].target2;
+            var txt1 = list[destino].txt1;
+            var txt2 = list[destino].txt2;
+
+            //change text and buttons
+            document.getElementById("show").innerHTML =
+                '<p>' + list[destino].desc + '<br> <br>' +
+                '<button class="button" onclick="ler(' + target1 + ')">' + txt1 + '</button> <br>' +
+                '<button class="button" onclick="ler(' + target2 + ')">' + txt2 + '</button> '
+
+            //change pictures
+            document.getElementById("picture").src = list[destino].img
+
+            //change the audio according to game stage (playing or died)
+            if(destino==10){
+                //bad end game audio
+                audio(0);
+            }
+            else{
+                if (destino==14){
+                    //gameplay audio
+                    audio(1);
+                }
+            }
+        }
+
+        //behavior on-load
+        function start() {
+            ler(14);
+        }
+		
+		function play_audio(){
+			 document.getElementById("Audio").play();
+		}
+    </script>
+</head>
+
+<body onload="start()">
+    <div class="container">
+        <div class="imagse">
+            <img id="picture" src="" onclick='play_audio()' />
+        </div>
+        <div class="music">
+            <audio id="Audio" controls autoplay="true" hidden loop></audio>
+        </div>
+        <div class="text" id="show"></div>
+    </div>
+</body>
+
+</html>
